@@ -9,3 +9,6 @@ Team Members:
 
 Steps to install Docker on Linux Ubuntu 18.04 is available at the following link:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+
+Tools that we can use for scanning: Anchore, Clair, Dadga, OpenSCAP, Sysdig Falco
+https://opensource.com/article/18/8/tools-container-security 
