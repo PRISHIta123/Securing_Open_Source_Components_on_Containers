@@ -64,7 +64,7 @@ It will return the following output:
 
 14. Details of CVE vulnerabilities reported are as follows:
 
-	anchore-cli --u admin --p foobar --url http://localhost:8228/v1 image vuln docker.io/library/debian:latest os
+		anchore-cli --u admin --p foobar --url http://localhost:8228/v1 image vuln docker.io/library/debian:latest os
 
 CVE reports:
 
@@ -76,6 +76,6 @@ CVE reports:
 
 15. Image Policy Evaluation:
 
-	anchore-cli --u admin --p foobar --url http://localhost:8228/v1 evaluate check docker.io/library/debian:latest
+		anchore-cli --u admin --p foobar --url http://localhost:8228/v1 evaluate check docker.io/library/debian:latest
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)
