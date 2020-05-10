@@ -62,4 +62,20 @@ It will return the following output:
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/vulnerabilities.JPG)
 
+14. Details of CVE vulnerabilities reported are as follows:
 
+	anchore-cli --u admin --p foobar --url http://localhost:8228/v1 image vuln docker.io/library/debian:latest os
+
+CVE reports:
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/cve_tags1.JPG)
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/cve_tags2.JPG)
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/cve_tags3.JPG)
+
+15. Image Policy Evaluation:
+
+	anchore-cli --u admin --p foobar --url http://localhost:8228/v1 evaluate check docker.io/library/debian:latest
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)
