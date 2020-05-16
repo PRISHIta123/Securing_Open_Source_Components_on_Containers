@@ -1,11 +1,14 @@
 # Securing_Open_Source_Components_on_Containers
-Code for HPE Project 
+Code for HPE Project  
 
 Team Members:
 1. Prishita Ray- 17BCE2405
 2. Tanmayi Nandan- 17BCI0039
 3. V Bhavyashri Vedula- 17BCI0115
-4. Saripella Vivekananda Verma- 17BCI0104
+4. Saripella Vivekananda Verma- 17BCI0104  
+
+Mentor:
+Prof. K.S.Umadevi
 
 Steps to install Docker on Linux Ubuntu 18.04 is available at the following link:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
@@ -13,7 +16,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-o
 Tools that we can use for scanning: Anchore, Clair, Dadga, OpenSCAP, Sysdig Falco
 https://opensource.com/article/18/8/tools-container-security 
 
-## Vulnerabilities reported by Anchore-Engine using CLI
+## Vulnerabilities reported by Anchore-Engine using CLI on Docker Debian Image
 
 The Vulnerability Report was obtained using the following procedure:
 1. Upgrade Windows 10 Home Edition to Windows 10 Education Edition
@@ -78,4 +81,16 @@ CVE reports:
 
 		anchore-cli --u admin --p foobar --url http://localhost:8228/v1 evaluate check docker.io/library/debian:latest
 
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)  
+
+## Exploiting Vulnerabilities on the Docker Debian Image
+
+Samples provided-  
+1. Rancher Server: 
+https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/explout/linux/http/rancher_server.md  
+2. Unprotected TCP socket: 
+https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/explout/linux/http/docker_daemon_tcp.md  
+3. Apparmor: 
+https://github.com/opencontainers/runc/issues/2128  
+
+Other CVE details- https://www.cvedetails.com/vendor/13534/Docker.html
