@@ -87,9 +87,9 @@ CVE reports:
 
 Samples provided-  
 1. Rancher Server: 
-https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/explout/linux/http/rancher_server.md  
+https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/linux/http/rancher_server.md  
 2. Unprotected TCP socket: 
-https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/explout/linux/http/docker_daemon_tcp.md  
+https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/linux/http/docker_daemon_tcp.md  
 3. Apparmor: 
 https://github.com/opencontainers/runc/issues/2128  
 
