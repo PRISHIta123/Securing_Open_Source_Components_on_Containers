@@ -155,6 +155,8 @@ Also, add create lib and lib64 directories to bash to contain libraries for x86 
 
 10. To see the contents of the new root directory, use ls. Everything in the original directory can be seen here. But when we try to check the present working directory it shows /, implying that it considers the new root directory as the actual one, instead of the original, and there is no way of navigating back to it, leading to a compromise on authentication and hence, a vulnerability. 
 
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/jail.JPG)
+
 
 
 
@@ -178,5 +180,5 @@ Reference: https://www.exploit-db.com/exploits/47147
 
 	sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"	
 	
-	
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/jail.JPG)
+
+
