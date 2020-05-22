@@ -194,8 +194,10 @@ Now, we create the /cmd script such that it will execute the ps aux command and 
 	sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"	
 Finally, we can execute the attack by spawning a process that immediately ends inside the “x” child cgroup. By creating a /bin/sh process and writing its PID to the cgroup.procs file in “x” child cgroup directory, the script on the host will execute after /bin/sh exits. The output of ps aux performed on the host is then saved to the /output file inside the container.
 
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod.PNG)
+
 	head /output
 
-	
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
+
 
