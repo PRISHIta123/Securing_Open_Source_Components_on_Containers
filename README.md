@@ -168,8 +168,10 @@ Reference: https://www.exploit-db.com/exploits/47147
 
 #### On the host
 	docker run --rm -it --cap-add=SYS_ADMIN --security-opt apparmor=unconfined ubuntu bash
+The above command specifies Docker to run with SYS-ADMIN capabilities and with no security ( --security-opt apparmor=unconfined). 
 	
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/docker_sysadmin.PNG)
+
 
 #### In the container
 	mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x
