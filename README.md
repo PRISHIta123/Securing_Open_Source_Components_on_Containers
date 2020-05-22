@@ -97,6 +97,8 @@ Other CVE details- https://www.cvedetails.com/vendor/13534/Docker.html
 
 ### Exploiting Chroot (Change root) CVE_2015_6240
 
+Reference: https://btholt.github.io/complete-intro-to-containers/chroot
+
 In this vulnerability, a hacker can create his own new root directory, different from the original, or gain access to the directory, for which he previously had write access. The below steps describe how this vulnerability can be exploited by an unauthorized user:  
 
 1. Invoke and Run the ubuntu bionic 18.04 docker container from the Windows Powershell by pulling its image from Docker Hub 
