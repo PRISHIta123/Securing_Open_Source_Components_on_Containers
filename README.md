@@ -99,9 +99,9 @@ Other CVE details- https://www.cvedetails.com/vendor/13534/Docker.html
 
 Reference: https://btholt.github.io/complete-intro-to-containers/chroot
 
-In this vulnerability, a hacker can create his own new root directory, different from the original, or gain access to the directory, for which he previously had write access. The below steps describe how this vulnerability can be exploited by an unauthorized user:  
+In this vulnerability, a hacker can create his own new root directory, different from the original, or gain access to the directory, for which he previously had write access, from which it is not possible to escape, and hence confidential information can be compromised. The below steps describe how this vulnerability can be exploited by an unauthorized user:  
 
-1. Invoke and Run the ubuntu bionic 18.04 docker container from the Windows Powershell by pulling its image from Docker Hub 
+1. Invoke and run the ubuntu bionic 18.04 docker container from the Windows Powershell by pulling its image from Docker Hub 
 
 		docker run -it --name docker-host --rm --privileged ubuntu:bionic
 
