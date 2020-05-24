@@ -16,6 +16,9 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-o
 Tools that we can use for scanning: Anchore, Clair, Dadga, OpenSCAP, Sysdig Falco
 https://opensource.com/article/18/8/tools-container-security 
 
+**Level 1 Report access link:** https://docs.google.com/document/d/1dG2JSPOpljgbQkomYFa5qfXsCrxvhX7X_D0P0upiB2E/edit#heading=h.mbjsiz6n6jlo
+**Level 2 Report access link:** https://docs.google.com/document/d/1l2zWXEsoBHJLobd672CToT_eyFsD1ykeHukVMs5Kj4k/edit?usp=sharing
+
 ## Vulnerabilities reported by Anchore-Engine using CLI on Docker Debian Image
 
 The Vulnerability Report was obtained using the following procedure:
@@ -82,6 +85,10 @@ CVE reports:
 		anchore-cli --u admin --p foobar --url http://localhost:8228/v1 evaluate check docker.io/library/debian:latest
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/policy.JPG)  
+
+### Security Scanning Report
+The report of the CVE violations can be accessed at the following link:
+https://docs.google.com/document/d/1DJDDFI02oXyvEloXb_i1AlexnhXto5zzqFN0pwCNz18/edit?usp=sharing
 
 ## Exploiting Vulnerabilities on Docker Containers
 
