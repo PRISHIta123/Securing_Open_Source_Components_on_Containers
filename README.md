@@ -16,8 +16,10 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-o
 Tools that we can use for scanning: Anchore, Clair, Dadga, OpenSCAP, Sysdig Falco
 https://opensource.com/article/18/8/tools-container-security 
 
-**Level 1 Report access link:** https://docs.google.com/document/d/1dG2JSPOpljgbQkomYFa5qfXsCrxvhX7X_D0P0upiB2E/edit#heading=h.mbjsiz6n6jlo
-**Level 2 Report access link:** https://docs.google.com/document/d/1l2zWXEsoBHJLobd672CToT_eyFsD1ykeHukVMs5Kj4k/edit?usp=sharing
+**Level 1 Report access link:** https://docs.google.com/document/d/1dG2JSPOpljgbQkomYFa5qfXsCrxvhX7X_D0P0upiB2E/edit#heading=h.mbjsiz6n6jlo  
+
+**Level 2 Report access link:**   
+https://docs.google.com/document/d/1l2zWXEsoBHJLobd672CToT_eyFsD1ykeHukVMs5Kj4k/edit?usp=sharing
 
 ## Vulnerabilities reported by Anchore-Engine using CLI on Docker Debian Image
 
