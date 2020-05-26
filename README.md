@@ -209,4 +209,11 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
+### Privilege Escalation Attack on debian:latest Docker container (CVE 2015-1328)  
+
+As listed in metasploit: linux/local/ntfs3g_priv_esc  
+
+Host/Attacking system OS: Ubuntu bionic 18.04  
+Target system OS: Debian 10  
+
 
