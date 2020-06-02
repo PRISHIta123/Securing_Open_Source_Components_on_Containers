@@ -209,14 +209,5 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
-### Privilege Escalation Attack on debian:latest Docker container (CVE 2019-13272)  
-
-As listed in metasploit: linux/local/ptrace_traceme_pkexec_helper
-
-Host/Attacking system OS: Ubuntu bionic 18.04  
-Target system OS: Debian 10  
-
-*Errors obtained, will be completed soon*
-
-### Finding a new vulnerability in Ubuntu:bionic  
+### Finding a new vulnerability in Ubuntu:bionic 
 
