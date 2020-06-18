@@ -227,13 +227,13 @@ To run the bandit tool on this component execute:
 	cd Desktop/docker-py-master
 	bandit -r docker-py-master
 	
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py1.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py1.JPG)
 
 Scan Reports:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py2.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py2.JPG)
 
 Vulnerabilities Reported with Code Locations:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py3.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py3.JPG)
 
 ##### Vulnerabilities Identified and Secured
 
@@ -252,13 +252,13 @@ To run the bandit tool on this component execute:
 	cd Desktop/compose
 	bandit -r compose
 	
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose1.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose1.JPG)
 
 Scan Reports:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose2.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose2.JPG)
 
 Vulnerabilities Reported with Code Locations:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose3.PNG)
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose3.JPG)
 
 	
 ##### Vulnerabilities Identified and Secured
