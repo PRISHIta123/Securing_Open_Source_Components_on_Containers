@@ -21,6 +21,9 @@ https://opensource.com/article/18/8/tools-container-security
 **Level 2 Report access link:**   
 https://docs.google.com/document/d/1l2zWXEsoBHJLobd672CToT_eyFsD1ykeHukVMs5Kj4k/edit?usp=sharing
 
+**Level 3 and Final Report access link:**   
+https://docs.google.com/document/d/1rj6SNAlkzTvJk865XmPAKtm4owbZruoQgVmQo82hb-8/edit#
+
 ## Vulnerabilities reported by Anchore-Engine using CLI on Docker Debian Image
 
 The Vulnerability Report was obtained using the following procedure:
@@ -210,4 +213,55 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
 ### Securing vulnerabilities in docker images  
+
+To identify vulnerablilties in the component codes, we will be using the Bandit Command Line Tool. Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.
+
+#### Docker-py Open Source Component
+
+A Python library for the Docker Engine API. It lets you do anything the docker command does, but from within Python apps – run containers, manage containers, manage Swarms, etc.  
+
+Link to repo: https://github.com/docker/docker-py
+
+To run the bandit tool on this component execute:
+
+	cd Desktop/docker-py-master
+	bandit -r docker-py-master
+	
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py1.PNG)
+
+Scan Reports:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py2.PNG)
+
+Vulnerabilities Reported with Code Locations:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/py3.PNG)
+
+##### Vulnerabilities Identified and Secured
+
+The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
+
+
+
+#### Docker Compose Open Source Component 
+
+To run the bandit tool on this component execute:
+
+	cd Desktop/compose
+	bandit -r compose
+	
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose1.PNG)
+
+Scan Reports:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose2.PNG)
+
+Vulnerabilities Reported with Code Locations:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose3.PNG)
+
+	
+##### Vulnerabilities Identified and Secured
+
+The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
+
+Link to repo: https://github.com/docker/compose
 
