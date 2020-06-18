@@ -243,6 +243,10 @@ The following list of vulnerabilities were detected by bandit in Docker-py. Corr
 
 #### Docker Compose Open Source Component 
 
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
+
+Link to repo: https://github.com/docker/compose
+
 To run the bandit tool on this component execute:
 
 	cd Desktop/compose
@@ -260,8 +264,3 @@ Vulnerabilities Reported with Code Locations:
 ##### Vulnerabilities Identified and Secured
 
 The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
-
-Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
-
-Link to repo: https://github.com/docker/compose
-
