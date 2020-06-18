@@ -209,5 +209,5 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
-### Finding a new vulnerability in Ubuntu:bionic 
+### Securing vulnerabilities in docker images  
 
