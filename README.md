@@ -236,6 +236,8 @@ Mount the volume by adding to the dockerfile using cat command:
 		
 Busybox is a program that can perform the actions of many common unix programs, such as ls, chmod, wget, cat, etc. Most commonly, it's used in embedded Linux due to its small executable size.
 
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/apparmor.PNG)	
+
 Build a docker image from the modified Dockerfile and assign it a tag called apparmor-bypass
 
 	sudo docker build -t apparmor-bypass .
@@ -244,8 +246,12 @@ Run the docker image:
 
 	sudo docker run --rm -it --security-opt "apparmor=docker-default"  apparmor-bypass
 
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/apparmor_attack.PNG)	
+
 As we can see, the container runs unconfined.
 While checking for process status, we can see that the docker daemon is running unconfined:
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/process_status.PNG)	
 
 ## Securing vulnerabilities in docker images  
 
