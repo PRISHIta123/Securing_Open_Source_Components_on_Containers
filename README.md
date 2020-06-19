@@ -265,37 +265,37 @@ Vulnerabilities Reported with Code Locations:
 
 The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
 
-##Use of assert
+## Use of assert
 
 
 Path:- Docker-py->docker->api->client.py
 Issue:  [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
 It is generally observed that some projects use assert to enforce interface constraints. However, assert is removed with compiling to optimised byte code (python -o producing *.pyo files). This caused various protections to be removed. This can cause assertion unreachable security issue.
-#Severity: Low
-#Confidence: Low
+#### Severity: Low
+#### Confidence: Low
 Solution to Secure :
 The code has to be changed  at line 266 like this:
 self.assertFalse(json and binary);
 In many places this same security issue is observed. But as this was explained here again not repeated down. For all issues the solution is similar. According to expression we can use assertEqual, assertNotEqual,assertTrue,…
 
-##Security Implications with Subprocess modules
+## Security Implications with Subprocess modules
  
  
 Path:- Docker-py->docker->credentials->store.py
 Issue:  [B404:blacklist] Consider possible security implications associated with subprocess module.
-#Severity: Low  
-#Confidence: High
+##### Severity: Low  
+##### Confidence: High
 Consider possible security implications associated with subprocess module. Python possesses many mechanisms to invoke an external executable. However, doing so may invoke a security issue if appropriate care is not taken to sanitize any user provided or variable input. When spawning of a subprocess without the use of a command shell has taken place it causes security issue. This type of subprocess invocation is not vulnerable to shell injection attacks, but care should still be taken to ensure validity of input.
 Solution to Secure
 The code where subprocess.Popen() is invoked, one must add the parameter shell=False. The benefit of not calling via the shell is that you are not invoking a 'mystery program.' Setting the shell argument to a true value causes subprocess to spawn an intermediate shell process, and tell it to run the command. In other words, using an intermediate shell means that variables, glob patterns, and other special shell features in the command string are processed before the command is run.
 
-##Possible shell injection via Paramiko call
+## Possible shell injection via Paramiko call
 
  
 Path:- Docker-py->docker->transport->sshconn.py
 Issue:  [B601:paramiko_calls] Possible shell injection via Paramiko call, check inputs are properly sanitized.
-#Severity: Medium
-#Confidence: Medium
+##### Severity: Medium
+##### Confidence: Medium
 Paramiko is a Python library designed to work with the SSH2 protocol for secure (encrypted and authenticated) connections to remote machines. It is intended to run commands on a remote host. These commands are run within a shell on the target and are thus vulnerable to various shell injection attack.
 Solution to Secure
 In line number 34, the following command is executed:
@@ -305,12 +305,12 @@ def shell_escape(arg):
     return "'%s'" % (arg.replace(r"'", r"'\''"), )
 This works because enclosing characters in single-quotes ( '' ) shall preserve the literal value of each character within the single-quotes. A single-quote cannot occur within single-quotes.
 
-##Hard coded Passwords
+## Hard coded Passwords
  
 Path:- Docker-py->tests->integration->credentials->store_test.py
  Issue: [B106:hardcoded_password_funcarg] Possible hard coded password: 'pass'
-#Severity: Low  
-#Confidence: High
+##### Severity: Low  
+##### Confidence: High
 The use of hard-coded passwords increases the possibility of password guessing tremendously.
 Solution to Secure : 
 Instead of Hard coding the password, Hashing mechanisms must be used to prevent attackers from cracking the password using Brute force mechanisms.
@@ -319,29 +319,29 @@ Some of the hashing techniques used in Python are:
 Generic hashing algorithms such as SHA-256, MD5, etc.
 PBKDF2 is a key derivation function where the user can set the computational cost; this aims to slow down the calculation of the key to make it more impractical to brute force. In usage terms, it takes a password, salt and a number of iterations to produce a certain key length which can also be compared to a hash as it is also a one-way function.
 
-##Possible binding to all interfaces
+## Possible binding to all interfaces
  
 Path:- Docker-py->tests->unit->fake_api.py
 Issue:  [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
-#Severity: Medium
-#Confidence: Medium
+##### Severity: Medium
+##### Confidence: Medium
 Binding to all network interfaces can potentially open up a service to traffic on unintended interfaces, that may not be properly documented or secured. Here the string pattern “0.0.0.0” is detected that indicate a hardcoded binding to all network interfaces.
 Solution to Secure 
 This vulnerability is reported with CVE-2018-1281. A security patch for the same has also been proposed.
 Link: https://github.com/dmlc/ps-lite/commit/4be817e8b03e7e92517e91f2dfcc50865e91c6ea
 
-##Chmod setting a permissive mask 0o222 on full_path
+## Chmod setting a permissive mask 0o222 on full_path
 
 Path:- Docker-py->tests->unit->utils_build_test.py
 Issue:  [B103:set_bad_file_permissions] Chmod setting a permissive mask 0o222 on full_path.
-#Severity: High
-#Confidence: High.
+##### Severity: High
+##### Confidence: High.
 POSIX based operating systems utilize a permissions model to protect access to parts of the file system. This model supports three roles “owner”, “group” and “world” each role may have a combination of “read”, “write” or “execute” flags sets. Python provides chmod to manipulate POSIX style permissions.  Here, Chmod sets a permissive mask 0o222 on file (full_path) which is quite dangerous.
 Solution to Secure
 Files should be created with restrictive file permissions to prevent vulnerabilities such as information disclosure and code execution. The permissive mask 0o222 sets the files to writable by all. This should be changed to chmod 600 file so that only the owner can read and write.
 
 
-##Probable insecure usage of temp file/directory
+## Probable insecure usage of temp file/directory
 
 
 Path: docker-py-master\tests\unit\api_container_test.py:911
@@ -350,8 +350,8 @@ Path: docker-py-master\tests\unit\api_container_test.py:911
 
 Path: docker-py-master\tests\unit\api_container_test.py:922
 Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
-#Severity: Medium   
-#Confidence: Medium
+##### Severity: Medium   
+##### Confidence: Medium
 Safely creating a temporary file or directory means following a number of rules (see the references for more details). This plugin test looks for strings starting with (configurable) commonly used temporary paths, for example:
 /tmp
 /var/tmp
@@ -368,14 +368,14 @@ Replace the code on line 898 of api_container_test.py as follows:
  to
 TMPDIR = “”
 
-##Use of exec detected
+## Use of exec detected
 
 
 
 Path: docker-py-master\docs\conf.py:73
 Issue: [B102:exec_used] Use of exec detected.
-#Severity: Medium   
-#Confidence: High
+##### Severity: Medium   
+##### Confidence: High
 The Python docs succinctly describe why the use of exec is risky. 
 This function supports dynamic execution of Python code. object must be either a string or a code object. If it is a string, the string is parsed as a suite of Python statements which is then executed (unless a syntax error occurs). 1 If it is a code object, it is simply executed. In all cases, the code that’s executed is expected to be valid as file input.
 
@@ -385,14 +385,14 @@ An alternative suggested is instead of building a string to execute, it can be p
 Another suggestion is the storing of the functions in a Python dictionary (Dict) and then using a string to select the function to call. 
 
 
-##Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+## Standard pseudo-random generators are not suitable for security/cryptographic purposes.
 
 
 
 Path: docker-py-master\tests\helpers.py:108
 Issue: [B311:blacklist] Standard pseudo-random generators are not suitable for security/cryptographic purposes.
-#Severity: Low   
-#Confidence: High
+##### Severity: Low   
+##### Confidence: High
 Solution to Secure:
 An alternative that can be used instead of the random() function to avoid this vulnerability is:
 time_reseed() 
