@@ -212,11 +212,11 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
-### Securing vulnerabilities in docker images  
+## Securing vulnerabilities in docker images  
 
 To identify vulnerablilties in the component codes, we will be using the Bandit Command Line Tool. Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.
 
-#### Docker-py Open Source Component
+### Docker-py Open Source Component
 
 A Python library for the Docker Engine API. It lets you do anything the docker command does, but from within Python apps – run containers, manage containers, manage Swarms, etc.  
 
@@ -239,7 +239,7 @@ Vulnerabilities Reported with Code Locations:
 
 The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
 
-## Use of assert
+#### 1. Use of assert
 
 
 Path:- Docker-py->docker->api->client.py
@@ -252,7 +252,7 @@ The code has to be changed  at line 266 like this:
 self.assertFalse(json and binary);
 In many places this same security issue is observed. But as this was explained here again not repeated down. For all issues the solution is similar. According to expression we can use assertEqual, assertNotEqual,assertTrue,…
 
-## Security Implications with Subprocess modules
+#### 2. Security Implications with Subprocess modules
  
  
 Path:- Docker-py->docker->credentials->store.py
@@ -264,7 +264,7 @@ Consider possible security implications associated with subprocess module. Pytho
 Solution to Secure :
 The code where subprocess.Popen() is invoked, one must add the parameter shell=False. The benefit of not calling via the shell is that you are not invoking a 'mystery program.' Setting the shell argument to a true value causes subprocess to spawn an intermediate shell process, and tell it to run the command. In other words, using an intermediate shell means that variables, glob patterns, and other special shell features in the command string are processed before the command is run.
 
-## Possible shell injection via Paramiko call
+#### 3. Possible shell injection via Paramiko call
 
  
 Path:- Docker-py->docker->transport->sshconn.py
@@ -281,7 +281,7 @@ def shell_escape(arg):
     return "'%s'" % (arg.replace(r"'", r"'\''"), )
 This works because enclosing characters in single-quotes ( '' ) shall preserve the literal value of each character within the single-quotes. A single-quote cannot occur within single-quotes.
 
-## Hard coded Passwords
+#### 4. Hard coded Passwords
  
 Path:- Docker-py->tests->integration->credentials->store_test.py
 Issue: [B106:hardcoded_password_funcarg] Possible hard coded password: 'pass'
@@ -296,7 +296,7 @@ Some of the hashing techniques used in Python are:
 Generic hashing algorithms such as SHA-256, MD5, etc.
 PBKDF2 is a key derivation function where the user can set the computational cost; this aims to slow down the calculation of the key to make it more impractical to brute force. In usage terms, it takes a password, salt and a number of iterations to produce a certain key length which can also be compared to a hash as it is also a one-way function.
 
-## Possible binding to all interfaces
+#### 5. Possible binding to all interfaces
  
 Path:- Docker-py->tests->unit->fake_api.py
 Issue:  [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
@@ -308,7 +308,7 @@ Solution to Secure :
 This vulnerability is reported with CVE-2018-1281. A security patch for the same has also been proposed.
 Link: https://github.com/dmlc/ps-lite/commit/4be817e8b03e7e92517e91f2dfcc50865e91c6ea
 
-## Chmod setting a permissive mask 0o222 on full_path
+#### 6. Chmod setting a permissive mask 0o222 on full_path
 
 Path:- Docker-py->tests->unit->utils_build_test.py
 Issue:  [B103:set_bad_file_permissions] Chmod setting a permissive mask 0o222 on full_path.
@@ -320,7 +320,7 @@ Solution to Secure :
 Files should be created with restrictive file permissions to prevent vulnerabilities such as information disclosure and code execution. The permissive mask 0o222 sets the files to writable by all. This should be changed to chmod 600 file so that only the owner can read and write.
 
 
-## Probable insecure usage of temp file/directory
+#### 7. Probable insecure usage of temp file/directory
 
 
 Path: docker-py-master\tests\unit\api_container_test.py:911
@@ -347,12 +347,12 @@ Replace the code on line 898 of api_container_test.py as follows:
  to
 TMPDIR = “”
 
-## Use of exec detected
-
+#### 8. Use of exec detected
 
 
 Path: docker-py-master\docs\conf.py:73
 Issue: [B102:exec_used] Use of exec detected.
+
 ##### Severity: Medium   
 ##### Confidence: High
 The Python docs succinctly describe why the use of exec is risky. 
@@ -364,7 +364,7 @@ An alternative suggested is instead of building a string to execute, it can be p
 Another suggestion is the storing of the functions in a Python dictionary (Dict) and then using a string to select the function to call. 
 
 
-## Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+#### 9. Standard pseudo-random generators are not suitable for security/cryptographic purposes.
 
 
 
@@ -378,7 +378,7 @@ An alternative that can be used instead of the random() function to avoid this v
 time_reseed() 
 The reseed() function works similar to the initialization algorithm. If you call time_reseed() some bits of new randomness from time() is added to the state.
 
-#### Docker Compose Open Source Component 
+### Docker Compose Open Source Component 
 
 Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
 
