@@ -239,32 +239,6 @@ Vulnerabilities Reported with Code Locations:
 
 The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
 
-
-
-#### Docker Compose Open Source Component 
-
-Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
-
-Link to repo: https://github.com/docker/compose
-
-To run the bandit tool on this component execute:
-
-	cd Desktop/compose
-	bandit -r compose
-	
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose1.JPG)
-
-Scan Reports:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose2.JPG)
-
-Vulnerabilities Reported with Code Locations:  
-![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose3.JPG)
-
-	
-##### Vulnerabilities Identified and Secured
-
-The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
-
 ## Use of assert
 
 
@@ -403,4 +377,130 @@ Solution to Secure :
 An alternative that can be used instead of the random() function to avoid this vulnerability is:
 time_reseed() 
 The reseed() function works similar to the initialization algorithm. If you call time_reseed() some bits of new randomness from time() is added to the state.
+
+#### Docker Compose Open Source Component 
+
+Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a Compose file to configure your application's services. Then, using a single command, you create and start all the services from your configuration. 
+
+Link to repo: https://github.com/docker/compose
+
+To run the bandit tool on this component execute:
+
+	cd Desktop/compose
+	bandit -r compose
+	
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose1.JPG)
+
+Scan Reports:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose2.JPG)
+
+Vulnerabilities Reported with Code Locations:  
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/compose3.JPG)
+
+	
+##### Vulnerabilities Identified and Secured
+
+The following list of vulnerabilities were detected by bandit in Docker-py. Corrections to prevent them and secure the code have been proposed as follows:
+
+The following list of vulnerabilities were detected by bandit in Docker compose. Corrections to prevent them and secure the code have been proposed as follows:  
+
+1. Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.   
+File path- compose\tests\unit\service_test.py:1462  
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss1.JPG)
+
+Severity: Medium   
+Confidence: Medium  
+
+Safely creating a temporary file or directory means following a number of rules (see the references for more details). This plugin test looks for strings starting with (configurable) commonly used temporary paths, for example:  
+*/tmp  
+*/var/tmp  
+*/dev/shm  
+*/etc  
+
+This test plugin takes a similarly named config block, hardcoded_tmp_directory. The config block provides a Python list, tmp_dirs, that lists string fragments indicating possible temporary file paths. Any string starting with one of these fragments will report a MEDIUM confidence issue.
+
+
+**Solution to Secure:**  
+Replace the code on line 1462 of service_test.py as follows:  
+	volume = '/tmp:/foo:z'
+ to  
+ 	volume = tempfile.gettempdir('foo:z')  
+
+The reason the original command does not work is because a tmp directory may store a predefined value in the user’s computer, for example: C:/Users/Username or a root directory that an attacker may get access to, and compromise the privacy of other files that are also contained within the same temporary directory. However, the second replaced command creates a temporary directory (unknown to the attacker) specifically for the file at runtime, and is therefore, more secure.  
+
+
+2.  Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces  
+File path- compose\tests\unit\container_test.py:125 
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss2.JPG)
+
+Severity: Medium   
+Confidence: Medium  
+
+Binding to all network interfaces can potentially open up a service to traffic on unintended interfaces, that may not be properly documented or secured. This plugin test looks for a string pattern “0.0. 0.0” that may indicate a hardcoded binding to all network interfaces.
+
+**Solution to Secure:**  
+Replace the code on line 125 of container_test.py as follows:
+
+	self.container_dict['NetworkSettings']['Ports'].update({
+            "45454/tcp": [{"HostIp": "0.0.0.0", "HostPort": "49197"}],
+            "45453/tcp": [],
+        })
+ to  
+	self.container_dict['NetworkSettings']['Ports'].update({
+            "45454/tcp": [{"HostIp": "192.168.43.27", "HostPort": "49197"}],
+            "45453/tcp": [],
+        })
+ 	  
+
+If the HostIP listens add port 0.0.0.0, it is not a secure connection, as it gains access to all connected devices at the same gateway. However, if the HostIP is set to only the IPV4 address of the host computer (that can be found by issuing the ipconfig command in cmd prompt of Windows), it listens only at the designated port, thus limiting access to other computers and making the connection more secure.  
+
+
+3.Issue: [B306:blacklist] Use of insecure and deprecated function (mktemp)   
+File path- compose\compose\service.py:1776
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss3.JPG)
+
+Severity: Medium   
+Confidence: High
+
+Functions that create temporary file names (such as tempfile.mktemp and os.tempnam) are fundamentally insecure, as they do not ensure exclusive access to a file with the temporary name they return. The file name returned by these functions is guaranteed to be unique on creation but the file must be opened in a separate operation. There is no guarantee that the creation and open operations will happen atomically. This provides an opportunity for an attacker to interfere with the file before it is opened.
+Note that mktemp has been deprecated since Python 2.3.  
+
+
+**Solution to Secure:**  
+Replace the code on line 1776 of service.py as follows:  
+	iidfile = tempfile.mktemp()
+ to  
+ 	idfile = tempfile.mkstemp()
+
+Unlike mktemp , mkstemp is actually guaranteed to create a unique file that cannot possibly clash with any other program trying to create a temporary file. This is because it works by calling open with the O_EXCL flag, which says you want to create a new file and get an error if the file already exists
+
+4.Issue: [B322:blacklist] The input method in Python 2 will read from standard input, evaluate and run the resulting string as python source code. This is similar, though in many ways worse, then using eval.
+File path- compose\script\release\utils.py:35
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss4.JPG)
+
+Severity: High  
+Confidence: High
+
+In Python 3, the raw_input() function was erased, and it’s functionality was transferred to a new built-in function known as input().
+There are two common methods to receive input in Python 2.x:
+*Using the input() function: This function takes the value and type of the input you enter as it is without modifying any type.
+*Using the raw_input() function : This function explicitly converts the input you give to type string
+
+The vulnerability in input() method lies in the fact that the variable accessing the value of input can be accessed by anyone just by using the name of the variable or method. The vulnerability can even provide the name of a function as input and access values that are otherwise not meant to be accessed.  
+
+
+**Solution to Secure:**  
+Replace the code on line 1776 of service.py as follows:  
+	answer = input(prompt).strip().lower()
+ to  
+ 	answer = raw_input(prompt).strip().lower()
+
+ In the original case, the variable having the value of input variable is able to access the value of the input variable directly.
+It evaluates the variable as if a number was directly entered, by which means it returns a True Boolean always. Using raw_input, it would not be possible as it disallows to read the variable directly. This helps to secure access to private data members as well as functions in a code. 
+
+
 
