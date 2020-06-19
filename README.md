@@ -212,6 +212,9 @@ Finally, we can execute the attack by spawning a process that immediately ends i
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/chmod_attack.PNG)	
 
+### Exploiting AppArmor bypass vulnerability (CVE-2019-16884)
+
+
 ## Securing vulnerabilities in docker images  
 
 To identify vulnerablilties in the component codes, we will be using the Bandit Command Line Tool. Bandit is a tool designed to find common security issues in Python code. To do this Bandit processes each file, builds an AST from it, and runs appropriate plugins against the AST nodes. Once Bandit has finished scanning all the files it generates a report.
@@ -241,9 +244,11 @@ The following list of vulnerabilities were detected by bandit in Docker-py. Corr
 
 #### 1. Use of assert
 
-
 Path:- Docker-py->docker->api->client.py
 Issue:  [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i1.JPG)
+
 It is generally observed that some projects use assert to enforce interface constraints. However, assert is removed with compiling to optimised byte code (python -o producing *.pyo files). This caused various protections to be removed. This can cause assertion unreachable security issue.
 #### Severity: Low
 #### Confidence: Low
@@ -257,9 +262,12 @@ In many places this same security issue is observed. But as this was explained h
 
 #### 2. Security Implications with Subprocess modules
  
- 
+
 Path:- Docker-py->docker->credentials->store.py
 Issue:  [B404:blacklist] Consider possible security implications associated with subprocess module.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i2.JPG)
+
 ##### Severity: Low  
 ##### Confidence: High
 Consider possible security implications associated with subprocess module. Python possesses many mechanisms to invoke an external executable. However, doing so may invoke a security issue if appropriate care is not taken to sanitize any user provided or variable input. When spawning of a subprocess without the use of a command shell has taken place it causes security issue. This type of subprocess invocation is not vulnerable to shell injection attacks, but care should still be taken to ensure validity of input.
@@ -272,6 +280,9 @@ The code where subprocess.Popen() is invoked, one must add the parameter shell=F
  
 Path:- Docker-py->docker->transport->sshconn.py
 Issue:  [B601:paramiko_calls] Possible shell injection via Paramiko call, check inputs are properly sanitized.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i3.JPG)
+
 ##### Severity: Medium
 ##### Confidence: Medium
 Paramiko is a Python library designed to work with the SSH2 protocol for secure (encrypted and authenticated) connections to remote machines. It is intended to run commands on a remote host. These commands are run within a shell on the target and are thus vulnerable to various shell injection attack.
@@ -291,6 +302,9 @@ This works because enclosing characters in single-quotes ( '' ) shall preserve t
  
 Path:- Docker-py->tests->integration->credentials->store_test.py
 Issue: [B106:hardcoded_password_funcarg] Possible hard coded password: 'pass'
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i4.JPG)
+
 ##### Severity: Low  
 ##### Confidence: High
 The use of hard-coded passwords increases the possibility of password guessing tremendously.
@@ -306,6 +320,9 @@ PBKDF2 is a key derivation function where the user can set the computational cos
  
 Path:- Docker-py->tests->unit->fake_api.py
 Issue:  [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i5.JPG)
+
 ##### Severity: Medium
 ##### Confidence: Medium
 Binding to all network interfaces can potentially open up a service to traffic on unintended interfaces, that may not be properly documented or secured. Here the string pattern “0.0.0.0” is detected that indicate a hardcoded binding to all network interfaces.
@@ -318,6 +335,9 @@ Link: https://github.com/dmlc/ps-lite/commit/4be817e8b03e7e92517e91f2dfcc50865e9
 
 Path:- Docker-py->tests->unit->utils_build_test.py
 Issue:  [B103:set_bad_file_permissions] Chmod setting a permissive mask 0o222 on full_path.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i6.JPG)
+
 ##### Severity: High
 ##### Confidence: High.
 POSIX based operating systems utilize a permissions model to protect access to parts of the file system. This model supports three roles “owner”, “group” and “world” each role may have a combination of “read”, “write” or “execute” flags sets. Python provides chmod to manipulate POSIX style permissions.  Here, Chmod sets a permissive mask 0o222 on file (full_path) which is quite dangerous.
@@ -330,11 +350,11 @@ Files should be created with restrictive file permissions to prevent vulnerabili
 
 
 Path: docker-py-master\tests\unit\api_container_test.py:911
-
-
-
 Path: docker-py-master\tests\unit\api_container_test.py:922
 Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i7.JPG)
+
 ##### Severity: Medium   
 ##### Confidence: Medium
 Safely creating a temporary file or directory means following a number of rules (see the references for more details). This plugin test looks for strings starting with (configurable) commonly used temporary paths, for example:
@@ -360,6 +380,8 @@ Replace the code on line 898 of api_container_test.py as follows:
 Path: docker-py-master\docs\conf.py:73
 Issue: [B102:exec_used] Use of exec detected.
 
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i8.JPG)
+
 ##### Severity: Medium   
 ##### Confidence: High
 The Python docs succinctly describe why the use of exec is risky. 
@@ -377,6 +399,9 @@ Another suggestion is the storing of the functions in a Python dictionary (Dict)
 
 Path: docker-py-master\tests\helpers.py:108
 Issue: [B311:blacklist] Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+
+![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/i9.JPG)
+
 ##### Severity: Low   
 ##### Confidence: High
 
@@ -416,8 +441,8 @@ File path- compose\tests\unit\service_test.py:1462
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss1.JPG)
 
-Severity: Medium   
-Confidence: Medium  
+##### Severity: Medium   
+##### Confidence: Medium  
 
 Safely creating a temporary file or directory means following a number of rules (see the references for more details). This plugin test looks for strings starting with (configurable) commonly used temporary paths, for example:  
 */tmp  
@@ -444,8 +469,8 @@ File path- compose\tests\unit\container_test.py:125
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss2.JPG)
 
-Severity: Medium   
-Confidence: Medium  
+##### Severity: Medium   
+##### Confidence: Medium  
 
 Binding to all network interfaces can potentially open up a service to traffic on unintended interfaces, that may not be properly documented or secured. This plugin test looks for a string pattern “0.0. 0.0” that may indicate a hardcoded binding to all network interfaces.
 
@@ -472,8 +497,8 @@ File path- compose\compose\service.py:1776
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss3.JPG)
 
-Severity: Medium   
-Confidence: High
+##### Severity: Medium   
+##### Confidence: High
 
 Functions that create temporary file names (such as tempfile.mktemp and os.tempnam) are fundamentally insecure, as they do not ensure exclusive access to a file with the temporary name they return. The file name returned by these functions is guaranteed to be unique on creation but the file must be opened in a separate operation. There is no guarantee that the creation and open operations will happen atomically. This provides an opportunity for an attacker to interfere with the file before it is opened.
 Note that mktemp has been deprecated since Python 2.3.  
@@ -494,8 +519,8 @@ File path- compose\script\release\utils.py:35
 
 ![alt text](https://github.com/PRISHIta123/Securing_Open_Source_Components_on_Containers/blob/master/ss4.JPG)
 
-Severity: High  
-Confidence: High
+##### Severity: High  
+##### Confidence: High
 
 In Python 3, the raw_input() function was erased, and it’s functionality was transferred to a new built-in function known as input().
 There are two common methods to receive input in Python 2.x:
