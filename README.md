@@ -247,9 +247,12 @@ Issue:  [B101:assert_used] Use of assert detected. The enclosed code will be rem
 It is generally observed that some projects use assert to enforce interface constraints. However, assert is removed with compiling to optimised byte code (python -o producing *.pyo files). This caused various protections to be removed. This can cause assertion unreachable security issue.
 #### Severity: Low
 #### Confidence: Low
+
 Solution to Secure :
 The code has to be changed  at line 266 like this:
-self.assertFalse(json and binary);
+
+    self.assertFalse(json and binary);
+    
 In many places this same security issue is observed. But as this was explained here again not repeated down. For all issues the solution is similar. According to expression we can use assertEqual, assertNotEqual,assertTrue,…
 
 #### 2. Security Implications with Subprocess modules
@@ -277,8 +280,11 @@ Solution to Secure :
 In line number 34, the following command is executed:
 sock.exec_command('docker system dial-stdio')
 Bandit reports a MEDIUM issue when it detects the use of Paramiko’s “exec_command” method advising the user to check inputs are correctly sanitized. One way to sanitize the input is:
-def shell_escape(arg):
+
+
+    def shell_escape(arg):
     return "'%s'" % (arg.replace(r"'", r"'\''"), )
+    
 This works because enclosing characters in single-quotes ( '' ) shall preserve the literal value of each character within the single-quotes. A single-quote cannot occur within single-quotes.
 
 #### 4. Hard coded Passwords
@@ -343,9 +349,10 @@ By default, replication programs use the /tmp directory for temporary files. In 
 An alternative is the use of the TMPDIR environment variable to specify a temporary directory.
 Replace the code on line 898 of api_container_test.py as follows:
 
-“/tmp”: “”
+    “/tmp”: “”
  to
-TMPDIR = “”
+ 
+    TMPDIR = “”
 
 #### 8. Use of exec detected
 
@@ -423,8 +430,10 @@ This test plugin takes a similarly named config block, hardcoded_tmp_directory. 
 
 **Solution to Secure:**  
 Replace the code on line 1462 of service_test.py as follows:  
+
 	volume = '/tmp:/foo:z'
  to  
+ 
  	volume = tempfile.gettempdir('foo:z')  
 
 The reason the original command does not work is because a tmp directory may store a predefined value in the user’s computer, for example: C:/Users/Username or a root directory that an attacker may get access to, and compromise the privacy of other files that are also contained within the same temporary directory. However, the second replaced command creates a temporary directory (unknown to the attacker) specifically for the file at runtime, and is therefore, more secure.  
@@ -448,7 +457,8 @@ Replace the code on line 125 of container_test.py as follows:
             "45453/tcp": [],
         })
  to  
-	self.container_dict['NetworkSettings']['Ports'].update({
+ 
+ 	self.container_dict['NetworkSettings']['Ports'].update({
             "45454/tcp": [{"HostIp": "192.168.43.27", "HostPort": "49197"}],
             "45453/tcp": [],
         })
@@ -471,8 +481,10 @@ Note that mktemp has been deprecated since Python 2.3.
 
 **Solution to Secure:**  
 Replace the code on line 1776 of service.py as follows:  
+
 	iidfile = tempfile.mktemp()
  to  
+ 
  	idfile = tempfile.mkstemp()
 
 Unlike mktemp , mkstemp is actually guaranteed to create a unique file that cannot possibly clash with any other program trying to create a temporary file. This is because it works by calling open with the O_EXCL flag, which says you want to create a new file and get an error if the file already exists
@@ -495,8 +507,10 @@ The vulnerability in input() method lies in the fact that the variable accessing
 
 **Solution to Secure:**  
 Replace the code on line 1776 of service.py as follows:  
+
 	answer = input(prompt).strip().lower()
  to  
+ 
  	answer = raw_input(prompt).strip().lower()
 
  In the original case, the variable having the value of input variable is able to access the value of the input variable directly.
