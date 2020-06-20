@@ -8,7 +8,10 @@ Team Members:
 4. Saripella Vivekananda Verma- 17BCI0104  
 
 Mentor:
-Prof. K.S.Umadevi
+Prof. K.S.Umadevi  
+
+HP Project Guide:
+Mr. Kishore Lakshman
 
 Steps to install Docker on Linux Ubuntu 18.04 is available at the following link:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
