@@ -1,5 +1,6 @@
 # Securing_Open_Source_Components_on_Containers
-Code for HPE Project  
+
+Code for HPE Project on Securing Open Source Components on Containers. Scanning of vulnerabilities on the Docker Debian Image was done using the Anchore Engine CLI. To demonstrate vulnerabilities, the Chroot, Chmod and AppArmor exploitations were performed on the Ubuntu Bionic Container. Finally, Docker-py and Docker-compose components were secured after new vulnerabilities were identified by the Bandit Tool.  
 
 Team Members:
 1. Prishita Ray- 17BCE2405
